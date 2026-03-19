@@ -1,0 +1,20 @@
+{
+  "name": "valorant-discord-bot",
+  "version": "1.0.0",
+  "description": "A bot for discord that uses an API to display statistics of players/matches with commands.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^2.6.0",
+    "axios": "^1.13.6",
+    "discord-api-types": "^0.38.42",
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.3.1",
+    "nodemon": "^3.1.14"
+  }
+}
