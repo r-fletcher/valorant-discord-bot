@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
 
 const client = new Client({
@@ -49,14 +49,30 @@ client.on('interactionCreate', async (interaction) => {
 
             const data = res.data.data.current_data;
 
-            interaction.reply(
-                ` **${name}#${tag}** 
-Rank: ${data.currenttierpatched}
-RR: ${data.ranking_in_tier}`
-            );
+            //console.log(data);
+
+            const imgURL = data.images.small;
+
+            const embed = new EmbedBuilder()
+                .setTitle(`${name}#${tag}`)
+                .setDescription(`Rank: **${data.currenttierpatched}**\nRR: ${data.ranking_in_tier}`)
+                .setThumbnail(imgURL)
+                .setColor(0xff4655);
+
+            interaction.reply({embeds: [embed]});
         } catch (err) {
             console.log(err);
             interaction.reply("Could not fetch player.");
         }
+    }
+
+    if (interaction.commandName === 'link') {
+        const riotId = interaction.options.getString('riotid');
+
+        if (!riotId.includes('#')) return interaction.reply({content: "Please use the format `Name#Tag`", ephemeral: true});
+
+        userLinks[interaction.user.id] = riotId;
+
+        interaction.reply({content: "Linked!", ephemeral: true});
     }
 });
