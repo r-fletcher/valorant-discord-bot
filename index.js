@@ -22,7 +22,7 @@ client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand) return;
 
     if (interaction.commandName === 'ping') {
-        await interaction.reply(':ping_pong: Pong!');
+        await interaction.reply(`:ping_pong: Pong!\n\`Latency: ${client.ws.ping}ms\``);
     }
 
     if (interaction.commandName === 'rank') {
@@ -61,8 +61,9 @@ client.on('interactionCreate', async (interaction) => {
 
             interaction.reply({embeds: [embed]});
         } catch (err) {
+            if (err.status === 404) return interaction.reply({content: `:x: Player \`${name}#${tag}\` not found`, ephemeral: true});
             console.log(err);
-            interaction.reply("Could not fetch player.");
+            interaction.reply({content: ":x: An unknown error occured", ephemeral: true});
         }
     }
 
