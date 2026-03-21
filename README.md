@@ -1,7 +1,23 @@
 # Valorant Discord Bot
 
-UNDER DEVELOPMENT
+_UNDER DEVELOPMENT_
 
-A simple bot for discord that uses an API to display statistics of players/matches using commands.
+A Discord bot that tracks Valorant stats using the [HendrikDev Valorant API](https://docs.henrikdev.xyz/valorant/).
 
-Makes use of [HendrikDev's Valorant API](https://docs.henrikdev.xyz/valorant/).
+## Features
+- /link - a valorant account to your discord
+- /unlink  - valorant account from your discord
+- /rank - rank of valorant player
+- /history - last 5 matches of player
+
+## Setup
+
+1. Clone repo
+2. Run `npm install`
+3. Create `.env` file
+4. Run `node index.js`
+
+## Tech Stack
+- Node.js
+- discord.js
+- SQLite
