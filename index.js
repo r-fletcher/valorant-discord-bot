@@ -83,20 +83,24 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.commandName === 'link') {
         const riotId = interaction.options.getString('riotid');
 
-        if (!riotId.includes('#')) return interaction.reply({content: "Please use the format `Name#Tag`", ephemeral: true});
+        if (!riotId.includes('#')) return interaction.reply({ content: "Please use the format `Name#Tag`", ephemeral: true });
 
-        const split = riotId.split('#');
+        const [name, tag] = riotId.split('#');
 
-        db.run(
-            `INSERT OR REPLACE INTO users (discord_id, riot_name, riot_tag)
-            VALUES (?, ?, ?)`,
-            [interaction.user.id, split[0], split[1]],
-            (err) => {
-                console.log(err);
-                return interaction.reply({content: ":x: Error linking your account", ephemeral: true})
-            }
-        )
-
-        interaction.reply({content: "Linked!", ephemeral: true});
+        await new Promise((resolve, reject) => {
+            db.run(
+                `INSERT OR REPLACE INTO users (discord_id, riot_name, riot_tag) VALUES (?, ?, ?)`,
+                [interaction.user.id, name, tag],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        }).then(() => {
+            interaction.reply({ content: `Linked **${name}#${tag}** to your account!`, ephemeral: true });
+        }).catch((err) => {
+            console.log(err);
+            interaction.reply({ content: ":x: Error linking your account", ephemeral: true });
+        });
     }
 });
