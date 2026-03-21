@@ -1,16 +1,19 @@
 const axios = require('axios');
 const {EmbedBuilder} = require('discord.js');
 const db = require('../db');
+const cache = require('../cache');
 
 const REGION = 'eu';
 const BASE_URL = 'https://api.henrikdev.xyz';
 
 module.exports = async (interaction) => {
+    await interaction.deferReply();
+
     const riotId = interaction.options.getString('riotid');
     let name, tag;
 
     if (riotId) {
-        if (!riotId.includes('#')) return interaction.reply({ content: "Please use the format `/history name#Tag`", ephemeral: true });
+        if (!riotId.includes('#')) return interaction.editReply({ content: "Please use the format `/history name#Tag`", ephemeral: true });
         [name, tag] = riotId.split('#');
     } else {
         try {
@@ -25,18 +28,21 @@ module.exports = async (interaction) => {
                 );
             });
 
-            if (!row) return interaction.reply({ content: ":x: No linked account. Use `/history name#tag`", ephemeral: true });
+            if (!row) return interaction.editReply({ content: ":x: No linked account. Use `/history name#tag`", ephemeral: true });
 
             name = row.riot_name;
             tag = row.riot_tag;
         } catch (err) {
             console.log(err);
-            return interaction.reply({ content: ":x: Database error. Please use `/history name#tag`", ephemeral: true });
+            return interaction.editReply({ content: ":x: Database error. Please use `/history name#tag`", ephemeral: true });
         }
     }
 
     try {
-        await interaction.deferReply();
+        const cacheKey = `history:${name}#${tag}`;
+        const cached = cache.get(cacheKey);
+
+        if (cached) return interaction.editReply({embeds: cached});
 
         const res = await axios.get(
             `${BASE_URL}/valorant/v3/matches/${REGION}/${name}/${tag}?mode=competitive`,
@@ -45,12 +51,12 @@ module.exports = async (interaction) => {
 
         const matches = res.data.data.slice(0, 5);
 
-        const embeds = matches.map(match => {
+        const matchEmbeds = matches.map(match => {
             const player = match.players.all_players.find(
                 p => p.name.replaceAll(' ', '') === name.replaceAll(' ','') && p.tag === tag
             );
 
-            if (!player) return ':warning: Could not find player data for this match';
+            if (!player) return new EmbedBuilder().setDescription(':warning: Could not find player data for this match');
 
             const {kills, deaths, assists } = player.stats;
             const kd = (kills / Math.max(deaths, 1)).toFixed(2);
@@ -79,7 +85,10 @@ module.exports = async (interaction) => {
             .setTitle(`Match History for ${name}#${tag}`)
             .setFooter({ text: 'Last 5 matches • Powered by HenrikDev API' });
 
-        await interaction.editReply({ embeds: [header, ...embeds] });
+        const embeds = [header, ...matchEmbeds];
+        cache.set(cacheKey, embeds);
+
+        await interaction.editReply({ embeds });
     } catch (err) {
         if (err.status === 404) return interaction.editReply({ content: `:x: Matches for \`${name}#${tag}\` not found` });
         console.log(err);

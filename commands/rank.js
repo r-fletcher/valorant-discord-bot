@@ -1,16 +1,19 @@
 const axios = require('axios');
 const {EmbedBuilder} = require('discord.js');
 const db = require('../db');
+const cache = require('../cache');
+
 
 const REGION = 'eu';
 const BASE_URL = 'https://api.henrikdev.xyz';
 
 module.exports = async (interaction) => {
+    await interaction.deferReply();
     const riotId = interaction.options.getString('riotid');
     let name, tag;
 
     if (riotId) {
-        if (!riotId.includes('#')) return interaction.reply({ content: "Please use the format `/rank name#Tag`", ephemeral: true });
+        if (!riotId.includes('#')) return interaction.editReply({ content: "Please use the format `/rank name#Tag`"});
         [name, tag] = riotId.split('#');
     } else {
         try {
@@ -25,17 +28,22 @@ module.exports = async (interaction) => {
                 );
             });
 
-            if (!row) return interaction.reply({ content: ":x: No linked account. Use `/link name#tag`", ephemeral: true });
+            if (!row) return interaction.editReply({ content: ":x: No linked account. Use `/link name#tag`"});
 
             name = row.riot_name;
             tag = row.riot_tag;
         } catch (err) {
             console.log(err);
-            return interaction.reply({ content: ":x: Database error. Please use `/rank name#tag`", ephemeral: true });
+            return interaction.editReply({ content: ":x: Database error. Please use `/rank name#tag`"});
         }
     }
 
     try {
+        const cacheKey = `rank:${name}#${tag}`;
+        const cached = cache.get(cacheKey);
+
+        if (cached) return interaction.editReply({embeds: cached});
+
         const res = await axios.get(
             `${BASE_URL}/valorant/v2/mmr/${REGION}/${name}/${tag}`,
             { headers: { Authorization: process.env.VAL_API_KEY } }
@@ -44,16 +52,19 @@ module.exports = async (interaction) => {
         const data = res.data.data.current_data;
         const imgURL = data.images.small;
 
-        const embed = new EmbedBuilder()
+        const embeds = new EmbedBuilder()
             .setTitle(`${name}#${tag}`)
             .setDescription(`Rank: **${data.currenttierpatched}**\nRR: ${data.ranking_in_tier}`)
             .setThumbnail(imgURL)
-            .setColor(0xff4655);
+            .setColor(0xff4655)
+            .setFooter({ text: 'Powered by HenrikDev API' });
 
-        interaction.reply({ embeds: [embed] });
+        cache.set(cacheKey, [embeds]);
+
+        interaction.editReply({ embeds: [embeds] });
     } catch (err) {
-        if (err.status === 404) return interaction.reply({ content: `:x: Player \`${name}#${tag}\` not found`, ephemeral: true });
+        if (err.status === 404) return interaction.editReply({ content: `:x: Player \`${name}#${tag}\` not found`});
         console.log(err);
-        interaction.reply({ content: ":x: An unknown error occured", ephemeral: true });
+        interaction.editReply({ content: ":x: An unknown error occured"});
     }
 }
