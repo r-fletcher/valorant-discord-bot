@@ -15,6 +15,7 @@ A Discord bot that tracks Valorant stats using the [HendrikDev Valorant API](htt
 1. Clone repo
 2. Run `npm install`
 3. Create `.env` file
+  -> need a token from discord, and an api key from HendrikDev
 4. Run `node index.js`
 
 ## Tech Stack
