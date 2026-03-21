@@ -43,7 +43,7 @@ module.exports = async (interaction) => {
             { headers: { Authorization: process.env.VAL_API_KEY } }
         );
 
-        const matches = res.data.data.slice(0, 3);
+        const matches = res.data.data.slice(0, 5);
 
         const embeds = matches.map(match => {
             const player = match.players.all_players.find(
@@ -58,12 +58,16 @@ module.exports = async (interaction) => {
             const agentImg = player.assets.agent.small;
             const map = match.metadata.map;
             const team = player.team.toLowerCase();
+            const redScore = match.teams.red.rounds_won;
+            const blueScore = match.teams.blue.rounds_won;
+            const draw = match.teams.blue.has_won === match.teams.red.has_won;
             const win = match.teams[team]?.has_won ?? false;
 
             return new EmbedBuilder()
-            .setTitle(`${win ? ':green_circle: Win' : ':red_circle: Loss'} — ${map}`)
-            .setColor(win ? 0x00ff88 : 0xff4655)
+            .setTitle(`**${map}**`)
+            .setColor(draw ? 0xd2d5d8 : win ? 0x00ff88 : 0xff4655)
             .setThumbnail(agentImg ?? null)
+            .setDescription(`## ${redScore} - ${blueScore}`)
             .addFields(
                 { name: 'Agent', value: agent, inline: true },
                 { name: 'KDA', value: `${kills}/${deaths}/${assists}`, inline: true },
@@ -73,7 +77,7 @@ module.exports = async (interaction) => {
 
         const header = new EmbedBuilder()
             .setTitle(`Match History for ${name}#${tag}`)
-            .setFooter({ text: 'Last 3 matches • Powered by HenrikDev API' });
+            .setFooter({ text: 'Last 5 matches • Powered by HenrikDev API' });
 
         await interaction.editReply({ embeds: [header, ...embeds] });
     } catch (err) {
