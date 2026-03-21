@@ -14,7 +14,7 @@ const commands = [
         options: [
             {
                 name: 'riotid',
-                description: 'Your RiotID (name#tag)',
+                description: 'Player\'s RiotID (name#tag)',
                 type: 3, // string
                 required: false
             }
@@ -35,6 +35,18 @@ const commands = [
     {
         name: 'unlink',
         description: 'Removes Valorant account link from you',
+    },
+    {
+        name: 'history',
+        description: 'Shows match history',
+        options: [
+            {
+                name: 'riotid',
+                description: 'Player\'s RiotID (name#tag)',
+                type: 3,
+                required: false
+            }
+        ]
     }
 ];
 

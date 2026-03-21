@@ -4,6 +4,7 @@ const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const rank = require('./commands/rank');
 const link = require('./commands/link');
 const unlink = require('./commands/unlink');
+const history = require('./commands/history');
 
 const client = new Client({
     intents: [
@@ -11,7 +12,7 @@ const client = new Client({
     ]
 });
 
-const commands = { rank, link, unlink };
+const commands = { rank, link, unlink, history };
 
 client.on('clientReady', () => {
     console.log(`Logged in as ${client.user.tag}`);

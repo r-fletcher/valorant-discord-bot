@@ -10,7 +10,7 @@ module.exports = async (interaction) => {
     let name, tag;
 
     if (riotId) {
-        if (!riotId.includes('#')) return interaction.reply({ content: "Please use the format `Name#Tag`", ephemeral: true });
+        if (!riotId.includes('#')) return interaction.reply({ content: "Please use the format `/rank name#Tag`", ephemeral: true });
         [name, tag] = riotId.split('#');
     } else {
         try {
