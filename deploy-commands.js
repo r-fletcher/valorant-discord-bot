@@ -31,6 +31,10 @@ const commands = [
                 required: true
             }
         ]
+    },
+    {
+        name: 'unlink',
+        description: 'Removes Valorant account link from you',
     }
 ];
 
