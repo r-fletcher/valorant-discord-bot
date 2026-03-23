@@ -62,7 +62,7 @@ module.exports = {
                         ? `+${rrChange}`
                         : `${rrChange}`;
                 return rrText
-            }).join('\t');
+            }).join('\u200b \u200b \u200b \u200b');
 
             const resultRR = mmrData.reduce((accumulator, currentVal) => {
                 return accumulator + currentVal.mmr_change_to_last_game;
@@ -96,9 +96,11 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setTitle(`Progression for ${name}#${tag}`)
                 .addFields(
-                    {name: 'Last 10 games', value: `\`${mmrString}\``, inline: true},
-                    {name: 'Net', value: `\`${resultText} RR\``, inline: false},
-                    {name: 'Streak', value: `\`${streakString}\``, inline: false}
+                    {name: 'Last 10 games', value: `${mmrString}`, inline: true},
+                    {name: '', value: '~~-------------------------------------------------~~'},
+                    {name: 'Net', value: `${resultText} RR`, inline: false},
+                    {name: 'Streak', value: `${streakString}`, inline: false},
+                    {name: '', value: '~~-------------------------------------------------~~'}
                 )
                 .setColor(resultRR > 0 ? 0x00ff88 : 0xff4655)
                 .setFooter({ text: 'Rank progression • Powered by HenrikDev API' });
