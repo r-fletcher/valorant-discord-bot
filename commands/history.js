@@ -112,7 +112,7 @@ module.exports = {
 
             await interaction.editReply({ embeds });
         } catch (err) {
-            if (err.status === 404) return interaction.editReply({ content: `:x: Matches for \`${name}#${tag}\` not found` });
+            if (err.response?.status === 404) return interaction.editReply({ content: `:x: Matches for \`${name}#${tag}\` not found` });
             console.log(err);
             interaction.editReply({ content: ":x: Failed to fetch matches" });
         }

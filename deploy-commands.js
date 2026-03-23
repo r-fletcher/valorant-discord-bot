@@ -47,6 +47,18 @@ const commands = [
                 required: false
             }
         ]
+    },
+    {
+        name: 'progress',
+        description: 'Shows progress over last 10 matches',
+        options: [
+            {
+                name: 'riotid',
+                description: 'Player\'s RiotID (name#tag)',
+                type: 3,
+                required: false
+            }
+        ]
     }
 ];
 
@@ -57,8 +69,8 @@ const rest = new REST({version: '10' }).setToken(process.env.DISCORD_TOKEN);
         console.log('Registering commands...');
 
         await rest.put(
-            // Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID), // for specific server - faster
-            Routes.applicationCommands(CLIENT_ID),
+            Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID), // for specific server - faster
+            //Routes.applicationCommands(CLIENT_ID),
             {body: commands }
         );
 
