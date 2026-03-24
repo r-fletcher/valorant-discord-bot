@@ -9,6 +9,7 @@ A Discord bot that tracks Valorant stats using the [HendrikDev Valorant API](htt
 - /unlink  - valorant account from your discord
 - /rank - rank of valorant player
 - /history - last 5 matches of player
+- more to come :D
 
 ## Setup
 
