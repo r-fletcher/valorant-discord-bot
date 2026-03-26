@@ -13,8 +13,10 @@ module.exports = {
     },
     set(key, data) {
         cache.set(key, {data, timestamp: Date.now()});
+        console.log(cache);
     },
     delete(key) {
         cache.delete(key);
+        console.log(cache);
     }
 }
