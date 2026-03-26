@@ -1,12 +1,13 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 
-const rank = require('./src/commands/rank');
-const link = require('./src/commands/link');
-const unlink = require('./src/commands/unlink');
-const history = require('./src/commands/history');
-const ping = require('./src/commands/ping');
-const progress = require('./src/commands/progress');
+const rank = require('./src/commands/RankCommand');
+const link = require('./src/commands/LinkCommand');
+const unlink = require('./src/commands/UnlinkCommand');
+const history = require('./src/commands/HistoryCommand');
+const ping = require('./src/commands/PingCommand');
+const progress = require('./src/commands/ProgressCommand');
+const stats = require('./src/commands/StatsCommand');
 
 const client = new Client({
     intents: [
@@ -14,7 +15,7 @@ const client = new Client({
     ]
 });
 
-const commands = { rank, link, unlink, history, ping, progress };
+const commands = { rank, link, unlink, history, ping, progress, stats };
 
 client.once('clientReady', () => {
     console.log(`Logged in as ${client.user.tag}\nGetting latency... `);
@@ -35,5 +36,5 @@ client.on('interactionCreate', async (interaction) => {
 
     const command = commands[interaction.commandName];
     console.log(`Received command '${command.name}'`);
-    if (command) await command.execute(interaction);
+    if (command) await command.run(interaction);
 });

@@ -28,7 +28,7 @@ const commands = [
                 name: 'riotid',
                 description: 'Your RiotID (name#tag)',
                 type: 3, // string
-                required: true
+                required: false
             }
         ]
     },
@@ -55,6 +55,24 @@ const commands = [
             {
                 name: 'riotid',
                 description: 'Player\'s RiotID (name#tag)',
+                type: 3,
+                required: false
+            }
+        ]
+    },
+    {
+        name: 'stats',
+        description: 'Shows stats over specified number of matches',
+        options: [
+            {
+                name: 'riotid',
+                description: 'Player\'s RiotID (name#tag)',
+                type: 3,
+                required: false
+            },
+            {
+                name: 'searchsize',
+                description: 'Number of matches to look at (default 10)',
                 type: 3,
                 required: false
             }
