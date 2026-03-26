@@ -18,7 +18,7 @@ class BaseCommand {
         try {
             const { name, tag } = await this.getRiotAccount(interaction);
 
-            const cacheKey = `${this.name}:${name}#${tag}`;
+            const cacheKey = `${this.name}:${name}#${tag}${this.getCacheKeySuffix(interaction)}`;
 
             if (this.useCache) {
                 const cached = cache.get(cacheKey);
@@ -29,6 +29,8 @@ class BaseCommand {
 
             // Call child implementation
             const embeds = await this.execute(interaction, { name, tag });
+
+            if (embeds === 0) return; // if already replied
 
             if (this.useCache) {
                 cache.set(cacheKey, embeds);
@@ -76,6 +78,14 @@ class BaseCommand {
             name: row.riot_name,
             tag: row.riot_tag
         };
+    }
+
+    // =========================
+    //  Cache Key inc size
+    // =========================
+    getCacheKeySuffix(interaction) {
+        const size = interaction.options.getString("searchsize") ?? "default";
+        return `:${size}`;
     }
 
     // =========================

@@ -7,6 +7,7 @@ const unlink = require('./src/commands/UnlinkCommand');
 const history = require('./src/commands/HistoryCommand');
 const ping = require('./src/commands/PingCommand');
 const progress = require('./src/commands/ProgressCommand');
+const stats = require('./src/commands/StatsCommand');
 
 const client = new Client({
     intents: [
@@ -14,7 +15,7 @@ const client = new Client({
     ]
 });
 
-const commands = { rank, link, unlink, history, ping, progress };
+const commands = { rank, link, unlink, history, ping, progress, stats };
 
 client.once('clientReady', () => {
     console.log(`Logged in as ${client.user.tag}\nGetting latency... `);
