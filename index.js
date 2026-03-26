@@ -6,7 +6,7 @@ const link = require('./src/commands/LinkCommand');
 const unlink = require('./src/commands/UnlinkCommand');
 const history = require('./src/commands/HistoryCommand');
 const ping = require('./src/commands/PingCommand');
-const progress = require('./src/commands/progress');
+const progress = require('./src/commands/ProgressCommand');
 
 const client = new Client({
     intents: [

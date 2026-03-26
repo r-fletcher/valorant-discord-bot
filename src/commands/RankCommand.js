@@ -11,9 +11,6 @@ class RankCommand extends BaseCommand {
     }
 
     async execute(interaction, { name, tag }) {
-        // =========================
-        //      API HERE
-        // =========================
         const res = await axios.get(
                         `${BASE_URL}/valorant/v2/mmr/${REGION}/${name}/${tag}`,
                         { headers: { Authorization: process.env.VAL_API_KEY } }
