@@ -47,7 +47,7 @@ module.exports = {
             if (cached) return interaction.editReply({embeds: cached});
 
             const res = await axios.get(
-                `${BASE_URL}/valorant/v3/matches/${REGION}/${name}/${tag}?mode=competitive`,
+                `${BASE_URL}/valorant/v3/matches/${REGION}/${name}/${tag}?mode=competitive&size=5`,
                 { headers: { Authorization: process.env.VAL_API_KEY } }
             );
 

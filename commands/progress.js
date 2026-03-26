@@ -91,7 +91,7 @@ module.exports = {
                 }
             }
 
-            const streakString = streak + (winStreak ? " Win/s" : " Loss/es");
+            const streakString = streak + (streak == 1 ? (winStreak ? " Win" : " Loss") : (winStreak ? " Wins" : " Losses"));
 
             const embed = new EmbedBuilder()
                 .setTitle(`Progression for ${name}#${tag}`)
