@@ -3,7 +3,7 @@ const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 
 const rank = require('./src/commands/rank');
 const link = require('./src/commands/LinkCommand');
-const unlink = require('./src/commands/unlink');
+const unlink = require('./src/commands/UnlinkCommand');
 const history = require('./src/commands/HistoryCommand');
 const ping = require('./src/commands/ping');
 const progress = require('./src/commands/progress');

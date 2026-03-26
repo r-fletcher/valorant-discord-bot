@@ -28,7 +28,7 @@ const commands = [
                 name: 'riotid',
                 description: 'Your RiotID (name#tag)',
                 type: 3, // string
-                required: true
+                required: false
             }
         ]
     },
