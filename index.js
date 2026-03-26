@@ -1,12 +1,12 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 
-const rank = require('./commands/rank');
-const link = require('./commands/link');
-const unlink = require('./commands/unlink');
-const history = require('./commands/history');
-const ping = require('./commands/ping');
-const progress = require('./commands/progress');
+const rank = require('./src/commands/rank');
+const link = require('./src/commands/link');
+const unlink = require('./src/commands/unlink');
+const history = require('./src/commands/history');
+const ping = require('./src/commands/ping');
+const progress = require('./src/commands/progress');
 
 const client = new Client({
     intents: [
