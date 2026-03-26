@@ -4,7 +4,7 @@ const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const rank = require('./src/commands/rank');
 const link = require('./src/commands/link');
 const unlink = require('./src/commands/unlink');
-const history = require('./src/commands/history');
+const history = require('./src/commands/HistoryCommand');
 const ping = require('./src/commands/ping');
 const progress = require('./src/commands/progress');
 
@@ -35,5 +35,5 @@ client.on('interactionCreate', async (interaction) => {
 
     const command = commands[interaction.commandName];
     console.log(`Received command '${command.name}'`);
-    if (command) await command.execute(interaction);
+    if (command) await command.run(interaction);
 });
