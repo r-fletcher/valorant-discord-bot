@@ -1,6 +1,11 @@
-module.exports = {
-    name: 'ping',
-    execute: async (interaction) => {
+const BaseCommand = require('./BaseCommand');
+
+class PingCommand extends BaseCommand {
+    constructor() {
+        super('ping', { useCache: false, useDb: false, defer: true});
+    }
+
+    async run(interaction) {
         await interaction.deferReply();
 
         const ping = interaction.client.ws.ping;
@@ -9,3 +14,5 @@ module.exports = {
         await interaction.editReply(`:ping_pong: Pong!\n\`Latency: ${interaction.client.ws.ping}ms\``);
     }
 }
+
+module.exports = new PingCommand();

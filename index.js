@@ -5,7 +5,7 @@ const rank = require('./src/commands/rank');
 const link = require('./src/commands/LinkCommand');
 const unlink = require('./src/commands/UnlinkCommand');
 const history = require('./src/commands/HistoryCommand');
-const ping = require('./src/commands/ping');
+const ping = require('./src/commands/PingCommand');
 const progress = require('./src/commands/progress');
 
 const client = new Client({
